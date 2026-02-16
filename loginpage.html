@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page · modern demo</title>
+    <!-- Poppins font for a clean look (optional but nice) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free) for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4ff 0%, #d9e2fa 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .login-card {
+            max-width: 440px;
+            width: 100%;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 2.5rem;
+            box-shadow: 0 30px 50px rgba(0, 10, 30, 0.2), inset 0 1px 4px rgba(255,255,255,0.8);
+            padding: 2.5rem 2.2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* header */
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header .icon-lock {
+            font-size: 2.8rem;
+            color: #2a4b7c;
+            background: rgba(255,255,255,0.6);
+            width: 80px;
+            height: 80px;
+            line-height: 80px !important;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 20px -8px rgba(0,32,64,0.2);
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .login-header h2 {
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: #0b2b44;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-header p {
+            color: #3e5e7e;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* input groups */
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1d3b5c;
+            margin-bottom: 6px;
+            margin-left: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            border: 1.5px solid #dbe3f0;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px -6px rgba(0,0,0,0.1);
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #3f7bc0;
+            box-shadow: 0 4px 14px -4px #3f7bc0aa;
+        }
+
+        .input-wrapper i {
+            color: #7b98b9;
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .input-wrapper input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 400;
+            padding: 0.3rem 0;
+            color: #102a40;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #a7b9ce;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* password eye toggle */
+        .input-wrapper .toggle-pw {
+            cursor: pointer;
+            color: #7b98b9;
+            transition: color 0.2s;
+            font-size: 1.1rem;
+            width: 30px;
+            text-align: right;
+        }
+
+        .input-wrapper .toggle-pw:hover {
+            color: #2a4b7c;
+        }
+
+        /* helper / error messages */
+        .field-error {
+            color: #c93838;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 18px;
+            margin-top: 5px;
+            letter-spacing: 0.2px;
+            min-height: 18px;
+        }
+
+        /* remember & forgot */
+        .row-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0 2rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2f4d70;
+            cursor: pointer;
+        }
+
+        .checkbox input {
+            accent-color: #2f6b9e;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: #1f5a96;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #a0bbd6;
+        }
+
+        .forgot-link:hover {
+            color: #0a2e4a;
+            border-bottom-style: solid;
+        }
+
+        /* login button */
+        .login-btn {
+            background: #1f4e7a;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 60px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 10px 18px -6px #1f4e7a80;
+            transition: 0.15s;
+            border: 1px solid #ffffff50;
+            margin-bottom: 1.8rem;
+        }
+
+        .login-btn:hover {
+            background: #123d61;
+            transform: scale(1.01);
+            box-shadow: 0 14px 22px -8px #143e64;
+        }
+
+        .login-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* demo credentials hint */
+        .demo-hint {
+            background: #e5eefc;
+            border-radius: 30px;
+            padding: 0.9rem 1.2rem;
+            text-align: center;
+            border: 1px dashed #789ec0;
+        }
+
+        .demo-hint p {
+            font-weight: 500;
+            color: #113753;
+            font-size: 0.9rem;
+        }
+
+        .demo-hint i {
+            color: #1f5a96;
+            margin-right: 4px;
+        }
+
+        .demo-hint span {
+            background: #b7d3f0;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 6px 4px 0;
+            color: #001e36;
+            border: 1px solid white;
+        }
+
+        /* footer */
+        .signup-text {
+            text-align: center;
+            margin-top: 1.8rem;
+            color: #274a6b;
+            font-size: 0.95rem;
+        }
+
+        .signup-text a {
+            color: #0f3d63;
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1.5px solid #7da5cb;
+        }
+
+        .signup-text a:hover {
+            color: #062238;
+            border-bottom-color: #062238;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <!-- icon header -->
+        <div class="login-header">
+            <div class="icon-lock">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>Welcome back</h2>
+            <p>please sign in to your account</p>
+        </div>
+
+        <!-- login form -->
+        <form id="loginForm" action="#" method="post" novalidate>
+            <!-- email field -->
+            <div class="input-group">
+                <label for="email"><i class="far fa-envelope" style="margin-right: 6px;"></i>Email</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user-circle"></i>
+                    <input type="email" id="email" name="email" placeholder="michael@example.com" value="demo@user.com">
+                    <i class="fas fa-check-circle" style="color: #45a049; opacity: 0.3;" id="emailValidIcon"></i>
+                </div>
+                <div class="field-error" id="emailError"></div>
+            </div>
+
+            <!-- password field -->
+            <div class="input-group">
+                <label for="password"><i class="fas fa-key" style="margin-right: 6px;"></i>Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="••••••••" value="secret123">
+                    <span class="toggle-pw" id="togglePassword">
+                        <i class="far fa-eye" id="toggleIcon"></i>
+                    </span>
+                </div>
+                <div class="field-error" id="passwordError"></div>
+            </div>
+
+            <!-- remember me + forgot -->
+            <div class="row-options">
+                <label class="checkbox">
+                    <input type="checkbox" id="remember" checked> <span>Keep me signed in</span>
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <!-- sign in button -->
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-arrow-right-to-bracket" style="margin-right: 8px;"></i> Log in
+            </button>
+
+            <!-- demo hint / credentials -->
+            <div class="demo-hint">
+                <p><i class="fas fa-flask"></i> Demo credentials (pre-filled)</p>
+                <div>
+                    <span><i class="far fa-envelope"></i> demo@user.com</span>
+                    <span><i class="fas fa-lock"></i> secret123</span>
+                </div>
+                <p style="font-size:0.8rem; margin-top:8px; color:#2c577d;">click login to simulate validation</p>
+            </div>
+
+            <!-- extra sign-up link -->
+            <div class="signup-text">
+                Don't have an account? <a href="#">Create account</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript one-page logic -->
+    <script>
+        (function() {
+            // ----- DOM elements -----
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const emailValidIcon = document.getElementById('emailValidIcon');
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const rememberCheck = document.getElementById('remember');
+            
+            // optional submit button (not required for handler, but we can use it)
+            // initial icon setup: show opacity 0.3 for email icon if prefilled is valid?
+            function updateEmailIcon() {
+                const email = emailInput.value.trim();
+                if (isValidEmail(email)) {
+                    emailValidIcon.style.opacity = '1';
+                    emailValidIcon.style.color = '#2a7a3b';
+                } else {
+                    emailValidIcon.style.opacity = '0.2';
+                    emailValidIcon.style.color = ''; // revert to default grayish?
+                }
+            }
+
+            // email regex quick check
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            // realtime email validation feedback
+            emailInput.addEventListener('input', function() {
+                updateEmailIcon();
+                // clear error while typing if it becomes valid
+                if (isValidEmail(emailInput.value.trim())) {
+                    emailError.innerText = '';
+                }
+            });
+
+            // password toggle show/hide
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                // toggle eye / eye-slash
+                if (type === 'password') {
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                } else {
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                }
+            });
+
+            // initial icon state
+            updateEmailIcon();
+
+            // ----- form submit handler (validation + fake login) -----
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();  // one-page, no actual POST
+
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                // reset errors
+                emailError.innerText = '';
+                passwordError.innerText = '';
+
+                let isValid = true;
+
+                // --- validate email ---
+                if (email === '') {
+                    emailError.innerText = 'Email address is required';
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    emailError.innerText = 'Please enter a valid email (e.g., name@domain.com)';
+                    isValid = false;
+                }
+
+                // --- validate password (simple: not empty) ---
+                if (password === '') {
+                    passwordError.innerText = 'Password cannot be empty';
+                    isValid = false;
+                } else if (password.length < 4) {
+                    passwordError.innerText = 'Password must be at least 4 characters (demo: secret123)';
+                    isValid = false;
+                }
+
+                // if fields are valid -> simulate success message
+                if (isValid) {
+                    // optional extra: check if email matches demo and password matches secret123 for extra flavour
+                    if (email === 'demo@user.com' && password === 'secret123') {
+                        showTemporaryMessage('✅ Welcome back, demo user! (simulated login)', '#2a7a3b');
+                    } else {
+                        showTemporaryMessage(`✅ Login successful (demo accepts any valid email/password with >=4 chars)`, '#1f5a96');
+                    }
+
+                    // you could also reset fields, but we keep prefilled.
+                    // optionally log:
+                    console.log('login valid, remember =', rememberCheck.checked);
+                } else {
+                    // shake effect on card (tiny animation)
+                    const card = document.querySelector('.login-card');
+                    card.style.animation = 'shake 0.15s ease-in-out 2';
+                    setTimeout(() => { card.style.animation = ''; }, 400);
+                }
+            });
+
+            // tiny shake keyframe (programmatically added)
+            const styleSheet = document.createElement("style");
+            styleSheet.innerHTML = `
+                @keyframes shake {
+                    0% { transform: translateX(0); }
+                    25% { transform: translateX(-6px); }
+                    50% { transform: translateX(6px); }
+                    75% { transform: translateX(-3px); }
+                    100% { transform: translateX(0); }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+            // helper to show floating success (we'll create a small toast-like under button)
+            function showTemporaryMessage(text, color) {
+                // remove existing temporary message if any
+                const oldMsg = document.getElementById('tempLoginMsg');
+                if (oldMsg) oldMsg.remove();
+
+                const msgDiv = document.createElement('div');
+                msgDiv.id = 'tempLoginMsg';
+                msgDiv.style.marginTop = '12px';
+                msgDiv.style.padding = '10px 16px';
+                msgDiv.style.borderRadius = '60px';
+                msgDiv.style.backgroundColor = '#e5f3e5';
+                msgDiv.style.color = '#1f5a32';
+                msgDiv.style.fontWeight = '500';
+                msgDiv.style.fontSize = '0.9rem';
+                msgDiv.style.textAlign = 'center';
+                msgDiv.style.border = '1px solid #aacfaa';
+                msgDiv.style.boxShadow = '0 4px 10px -4px #a0bca0';
+                msgDiv.style.transition = 'opacity 0.2s';
+                msgDiv.innerText = text;
+
+                // insert after demo hint or before signup text? just append after demo-hint
+                const demoHint = document.querySelector('.demo-hint');
+                demoHint.parentNode.insertBefore(msgDiv, demoHint.nextSibling);
+
+                // auto fade after 3 seconds
+                setTimeout(() => {
+                    if (msgDiv) {
+                        msgDiv.style.opacity = '0';
+                        setTimeout(() => { if (msgDiv.parentNode) msgDiv.remove(); }, 300);
+                    }
+                }, 3000);
+            }
+
+            // bonus: show forgot? just prevent default anchor navigation
+            document.querySelector('.forgot-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('🔐 (demo) Password reset would be sent to your email.');
+            });
+
+            // sign-up link same behavior (prevent)
+            document.querySelector('.signup-text a').addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('✨ Sign up flow — just a demo. You can stay on this page.');
+            });
+
+            // small improvement: if you click "demo" icon, maybe prefill? but they already prefilled
+        })();
+    </script>
+
+    <!-- extra note: the page is one-file, fully self-contained -->
+</body>
+</html>
